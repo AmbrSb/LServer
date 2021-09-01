@@ -23,7 +23,7 @@ You can use the provided Dockerfile to build and run LServer in a docker contain
 * **USE_PMR_POOL**: Enable using pmr pool resources in pool containers.
 * **STATISTICS**: Enable collection of runtime operational statistics which will be periodically printed to the console.
 ## Configure and Build
-## With Docker
+### With Docker
 Optionally, you can use the provided Dockerfile to build and run lserver in a docker container. 
 ```Bash
 cd lserver
@@ -82,6 +82,7 @@ All servers destroyed
 * Proactor-style scalable I/O architecture implemented using Asio.
 * Dynamic memory allocation is minimized: All major objects used in the system are managed by custom pools. Each pool is CERTP-derived from `Pool` template and defined customized allocation/deallocation operations for the specific managed type.
 * Use of dynamic callbacks is avoided, by using a CRTP-based hierarchy design to enabled better function inlining.
+![LSDiagram](https://user-images.githubusercontent.com/19773760/131641217-90ac03eb-2f73-4767-9b25-ddf2cf073414.png)
 ## Dynamic Reconfiguration
 In addition to the static configuration file, the user can change the concurrency/parallelism characteristics of individual servers dynamically at runtime, and the server gracefully converges to the given config.
 
@@ -305,17 +306,21 @@ Rpc succeeded with OK status
 
 `wrk` and `ab` have been used for the sake of benchmarking LServer. For Keep-Alive connection types:
 ```
->> ./wrk -t 8 -c 200 -d 100s --latency --header "connection: keep-alive" http://127.0.0.1:15001/sinkhole/
+>> ./wrk -t 8 -c 200 -d 100s --latency --header "connection: keep-alive" http://address:port/sinkhole/
 ```
 For making one TCP connection per HTTP request:
 ```
->> ./wrk -t 8 -c 200 -d 100s --latency --header "connection: close" http://127.0.0.1:15001/sinkhole/
+>> ./wrk -t 8 -c 200 -d 100s --latency --header "connection: close" http://address:port/sinkhole/
 ```
 ## Variable Number of I/O Contexts
 In this scenario we increase the number of I/O contexts from 1 to 24. Once with 1 thread per context and once with 2 threads with context. As expected with this simple workload (sinkhole), best performance is achieved with 1 thread per I/O context which minimizes contention between threads in each session.
 ### Connectoin Type: Keep-Alive
+![01](https://user-images.githubusercontent.com/19773760/131641298-1bea4987-95d4-4165-90aa-48dce89abfb5.png)
 ### Connectoin Type: Close
+![03](https://user-images.githubusercontent.com/19773760/131641418-9c22526b-bd89-49b1-9a77-850f78659212.png)
 ## A Single I/O Context - Variable Number of Threads
+![02-1](https://user-images.githubusercontent.com/19773760/131641383-2f2fec33-493d-4f74-9650-6e22d4488359.png)
+![02-2](https://user-images.githubusercontent.com/19773760/131641395-6ef36a38-c251-46ab-90fb-0f68197b3665.png)
 # Roadmap
 * Loading application protocol from user-supplied DSO
 * Scheduler plugins
