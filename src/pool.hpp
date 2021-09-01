@@ -214,10 +214,11 @@ namespace lserver {
   void
   Pool<T, D, GArgs...>::print_name()
   {
+#ifdef __cpp_concepts
     constexpr bool has_name = requires(const D& d) { derived()->name(); };
-
     if constexpr (has_name)
       lslog_note(1, "Destroying", get_derived_name());
+#endif
   }
 
   template <class T, class D, class... GArgs>
