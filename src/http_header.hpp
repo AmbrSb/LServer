@@ -216,7 +216,7 @@ namespace lserver {
   HttpRequestHeader::get_content_length()
   {
     assert(ready_);
-    return std::max(parser_.content_length, 0l);
+    return std::max(parser_.content_length, (int64_t)0);
   }
 
   inline bool
