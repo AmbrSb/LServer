@@ -264,10 +264,10 @@ namespace lserver {
   {
     std::scoped_lock _{mtx_};
     auto p = try_borrow(id, args...);
-    if (p != nullptr) [[likely]]
+    if (p != nullptr) LS_LIKELY
       callback(p);
     else {
-      if (callback_active_) [[likely]]
+      if (callback_active_) LS_LIKELY
         throw std::logic_error{"Invalid borrow request on a waiting pool"};
       callback_ = callback;
       callback_active_ = true;
@@ -330,7 +330,7 @@ namespace lserver {
   {
     T* p = nullptr;
 
-    if (!pool_.empty()) [[likely]] {
+    if (!pool_.empty()) LS_LIKELY {
       p = pool_.top();
 #if ENABLE_LS_SANITIZE
       assert(!p->engaged_);
@@ -339,13 +339,13 @@ namespace lserver {
       stats_.num_items_in_flight_.fetch_add(1);
       pool_.pop();
     } else {
-      if (max_size_ == 0 || stats_.num_items_in_flight_.load() < max_size_) [[likely]] {
+      if (max_size_ == 0 || stats_.num_items_in_flight_.load() < max_size_) LS_LIKELY {
         p = create(args...);
         subscribe(p);
       }
     }
 
-    if (p) [[likely]]
+    if (p) LS_LIKELY
       all_items_.insert_or_assign(p, id);
 
     return p;

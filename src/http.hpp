@@ -120,7 +120,7 @@ namespace lserver {
         std::max(alignof(BaseSession), alignof(Http)), n * sizeof(BaseSession));
 
     if (!ptr)
-      [[unlikely]]
+      LS_UNLIKELY
       {
         if (auto new_hndl = std::get_new_handler())
           new_hndl();
@@ -161,7 +161,7 @@ namespace lserver {
   Http::on_sent()
   {
     if (program_.has_more_data())
-      [[likely]]
+      LS_LIKELY
       {
         program_.get_data(d_);
         BaseSession::send(d_);
@@ -175,7 +175,7 @@ namespace lserver {
     transaction_finished();
     auto keep_alive = request_header_.get_keep_alive();
     if (keep_alive)
-      [[likely]]
+      LS_LIKELY
       {
         this->reset();
         /*
@@ -196,7 +196,7 @@ namespace lserver {
         BaseSession::data_size());
 
     if (header_end_offset)
-      [[likely]]
+      LS_LIKELY
       {
         BaseSession::set_expected_data_length(
             request_header_.get_content_length());
@@ -220,7 +220,7 @@ namespace lserver {
 #endif
 
     if (!request_header_.is_ready())
-      [[unlikely]]
+      LS_UNLIKELY
       {
         BaseSession::transaction_started();
         if (!try_handle_header()) {
@@ -232,7 +232,7 @@ namespace lserver {
       }
 
     if (!program_)
-      [[unlikely]]
+      LS_UNLIKELY
       {
         // Decide on the type of program based on the request URL
         auto url = request_header_.get_url();
@@ -298,7 +298,7 @@ namespace lserver {
     assert(BaseSession::check_finished() == finished);
 
     if (finished)
-      [[unlikely]]
+      LS_UNLIKELY
       {
         /*
          * All data is fed into the program, now we check the response from the

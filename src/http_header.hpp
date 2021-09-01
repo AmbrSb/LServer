@@ -148,7 +148,7 @@ namespace lserver {
   {
     auto header_end = find_request_header_end_offset(data, len);
     if (header_end)
-      [[likely]]
+      LS_LIKELY
       {
         proxygen::http_parser_execute(&parser_, &settings, data, *header_end);
         ready_ = true;
@@ -180,7 +180,7 @@ namespace lserver {
   HttpRequestHeader::set_value(char const* buf, std::size_t len)
   {
     switch (header_state_) {
-      [[likely]] case HeaderState::kNone : return;
+      LS_LIKELY case HeaderState::kNone : return;
     case HeaderState::kConnection:
       if (0 == strncasecmp(buf, "close", len)) {
         keep_alive_ = false;

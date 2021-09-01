@@ -39,6 +39,14 @@
 #define LS_SANITIZE
 #endif
 
+#if __has_cpp_attribute(likely)
+#define LS_LIKELY [[likely]]
+#define LS_UNLIKELY [[unlikely]]
+#else
+#define LS_LIKELY
+#define LS_UNLIKELY
+#endif
+
 #include <filesystem>
 #include <iostream>
 

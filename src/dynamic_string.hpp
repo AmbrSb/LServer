@@ -176,7 +176,7 @@ namespace lserver {
     std::size_t current_sz = size();
 
     b = allocate(sz);
-    if (!b) [[unlikely]]
+    if (!b) LS_UNLIKELY
       throw std::bad_alloc{};
     memcpy(b, buffer_start_, current_sz);
     deallocate(buffer_start_, capacity_);
@@ -203,12 +203,12 @@ namespace lserver {
     nchars = snprintf(buffer_end_, capacity_ - size(), args...);
 #pragma GCC diagnostic pop
 
-    if (nchars < 0) [[unlikely]]
+    if (nchars < 0) LS_UNLIKELY
       throw std::logic_error{
           "snprintf failed in dynamic string: " +
           std::error_condition{errno, std::system_category()}.message()};
 
-    if (nchars >= capacity_ - size()) [[unlikely]] {
+    if (nchars >= capacity_ - size()) LS_UNLIKELY {
       /*
        * snprintf was not able to write the whole string
        * into the buffer.

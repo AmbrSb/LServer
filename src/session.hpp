@@ -297,7 +297,7 @@ namespace lserver {
     bool idle = outgoing_queue_.empty();
     outgoing_queue_.push(qb);
 
-    if (idle) [[likely]] {
+    if (idle) LS_LIKELY {
       async_send();
     }
   }
@@ -377,7 +377,7 @@ namespace lserver {
      * know any better. Otherwise we can calculate a larger min transfer
      * size as follow.
      */
-    if (expected_data_chunck_sz_set_) [[likely]]  {
+    if (expected_data_chunck_sz_set_) LS_LIKELY  {
       auto expected_remaining_data_sz =
           expected_data_chunck_sz_ - bytes_received_;
 
@@ -385,7 +385,7 @@ namespace lserver {
        * async_receive should not have been called if expected remaining
        * data size is zero.
        */
-      if (expected_remaining_data_sz == 0) [[unlikely]]
+      if (expected_remaining_data_sz == 0) LS_UNLIKELY
         throw BadReceptionState{};
 
       next_transfer_sz = std::min(expected_remaining_data_sz, max_transfer_sz_);
@@ -395,7 +395,7 @@ namespace lserver {
     auto condition = asio::transfer_at_least(next_transfer_sz);
     auto cb = std::bind(&Session::receive_event_cb, this, _1, _2);
 
-    if (strand_) [[unlikely]]
+    if (strand_) LS_UNLIKELY
       asio::async_read(*socket_, std::move(dynbuf), condition,
                        strand_->wrap(std::move(cb)));
     else
@@ -405,7 +405,7 @@ namespace lserver {
      * If lscontext_ was stopped before the above calls to async_read(), we
      * need to close the session manually.
      */
-    if (lscontext_->stopped()) [[unlikely]]
+    if (lscontext_->stopped()) LS_UNLIKELY
       close_once();
   }
 
@@ -421,7 +421,7 @@ namespace lserver {
   Session<P>::receive_event_cb(std::error_code error,
                                std::size_t bytes_transferred)
   {
-    if (error) [[unlikely]] {
+    if (error) LS_UNLIKELY {
       report_error(error);
       async_close(error);
       return;
@@ -434,7 +434,7 @@ namespace lserver {
      * to do next (continue or close), based on the return value.
      */
     switch (get_protocol()->on_data()) {
-    [[likely]] case kContinue:
+    LS_LIKELY case kContinue:
       async_receive();
       break;
     case kClose:
@@ -454,7 +454,7 @@ namespace lserver {
   Session<P>::async_send()
   {
     auto qb = outgoing_queue_.front();
-    if (strand_) [[unlikely]] {
+    if (strand_) LS_UNLIKELY {
       asio::async_write(
           *socket_, asio::buffer(qb->data(), qb->size()),
           strand_->wrap(std::bind(&Session::send_event_cb, this, _1, _2)));
@@ -474,7 +474,7 @@ namespace lserver {
     stats_.stats_bytes_sent_delta_.fetch_add(bytes_transferred);
 #endif
 
-    if (error) [[unlikely]] {
+    if (error) LS_UNLIKELY {
       outgoing_queue_.clear();
       report_error(error);
       async_close(error);
@@ -482,7 +482,7 @@ namespace lserver {
     }
 
     outgoing_queue_.pop();
-    if (!outgoing_queue_.empty())  [[likely]]{
+    if (!outgoing_queue_.empty())  LS_LIKELY{
       async_send();
     } else {
       /*
@@ -504,7 +504,7 @@ namespace lserver {
       /*
        * If we have pending shutdown request(s), we queue another async close
        */
-      if (prepare_for_shutdown_.load()) [[unlikely]] {
+      if (prepare_for_shutdown_.load()) LS_UNLIKELY {
         prepare_for_shutdown_.store(false);
         async_close(std::error_code{});
       }
@@ -520,7 +520,7 @@ namespace lserver {
      * Sessio yet. We set 'prepare_for_shutdown_' and wait until
      * the outgoing queue is empty.
      */
-    if (!outgoing_queue_.empty()) [[likely]] {
+    if (!outgoing_queue_.empty()) LS_LIKELY {
       prepare_for_shutdown_.store(true);
       return;
     }
@@ -532,10 +532,10 @@ namespace lserver {
   inline void
   Session<P>::async_close(std::error_code error)
   {
-    if (error) [[unlikely]] 
+    if (error) LS_UNLIKELY 
       report_error(error);
 
-    if (strand_) [[unlikely]]
+    if (strand_) LS_UNLIKELY
       asio::post(*strand_, std::bind(&Session::close_once, this));
     else
       asio::post(lscontext_->get_io_context(),
@@ -547,7 +547,7 @@ namespace lserver {
      * This is needed because async_close may have been called from outside
      * of a event handler.
      */
-    if (lscontext_->get_io_context().stopped()) [[unlikely]]
+    if (lscontext_->get_io_context().stopped()) LS_UNLIKELY
       close_once();
   }
 
@@ -580,14 +580,14 @@ namespace lserver {
     /*
      * Return strand_ to strand pool of lscontext_
      */
-    if (strand_) [[unlikely]]
+    if (strand_) LS_UNLIKELY
       lscontext_->put_strand(strand_);
     strand_ = nullptr;
 
     /*
      * If we have an LSContext, we are responsible for deref()ing it.
      */
-    if (lscontext_) [[likely]]
+    if (lscontext_) LS_LIKELY
       lscontext_->deref();
 
     /*
