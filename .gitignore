@@ -1,0 +1,8 @@
+build/*
+lightning_server/*
+.vscode/*
+src/lscomm.grpc.pb.cc
+src/lscomm.grpc.pb.h
+src/lscomm.pb.cc
+src/lscomm.pb.h
+images/*

@@ -1,0 +1,36 @@
+IndentWidth: 2
+AccessModifierOffset: -2
+UseTab: Never
+ColumnLimit: 80
+MaxEmptyLinesToKeep: 2
+SpaceBeforeParens: ControlStatements
+BreakBeforeBraces: Custom
+BraceWrapping:
+    AfterFunction: true
+    AfterClass: false
+    AfterStruct: false
+    AfterEnum: false
+    BeforeElse: false
+    BeforeCatch: false
+    SplitEmptyFunction: false
+    AfterNamespace: false
+    AfterExternBlock: true
+    SplitEmptyRecord: false
+NamespaceIndentation: All
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortBlocksOnASingleLine: Empty
+PointerAlignment: Left
+AlwaysBreakAfterReturnType: AllDefinitions
+AlignAfterOpenBracket: Align
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowAllArgumentsOnNextLine: true
+SpaceInEmptyBlock: true
+SpaceInEmptyParentheses: false
+SpacesInAngles: false
+SpaceBeforeRangeBasedForLoopColon: false
+BreakConstructorInitializers: BeforeColon
+AllowAllConstructorInitializersOnNextLine: false
+ConstructorInitializerAllOnOneLineOrOnePerLine: false
+BreakConstructorInitializers: BeforeComma
+AlwaysBreakTemplateDeclarations: Yes
+AllowShortCaseLabelsOnASingleLine: false
