@@ -21,8 +21,8 @@ find_program(GIT_EXE NAMES git)
 include("${CMAKE_CURRENT_LIST_DIR}/third_party/nlohman_json.cmake")
 
 add_compile_options(
-    "$<$<CONFIG:Debug>:-O0;-g3;-gdwarf;-ggdb;-fsanitize=address>"
-    "$<$<CONFIG:Release>:-O2;-g3>"
+    "$<$<CONFIG:Debug>:-O0;-fconcepts;-g3;-gdwarf;-ggdb;-fsanitize=address>"
+    "$<$<CONFIG:Release>:-O2;-g3;-fconcepts>"
 )
 
 add_link_options(
