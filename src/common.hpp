@@ -47,7 +47,9 @@
 #define LS_UNLIKELY
 #endif
 
+#ifdef __cpp_lib_filesystem
 #include <filesystem>
+#endif
 #include <iostream>
 
 #define log_error(...) log_(__FILE__, __func__, __LINE__, 0, __VA_ARGS__);
@@ -78,8 +80,12 @@ namespace lserver {
   log_(char const* file_name, char const* func_name, int lineno, int level,
        Args const&... args)
   {
+#ifdef __cpp_lib_filesystem
     auto fpath = std::filesystem::path{file_name}.filename();
     std::string fname = fpath;
+#else
+    auto fname = std::string{file_name};
+#endif
     fname = fname.substr(0, fname.size() - 2);
 
     if (log_level >= level) {
