@@ -32,7 +32,9 @@
 #include <cassert>
 #include <cstring>
 #include <exception>
+#ifdef USE_PMR_POOL_RESOURCE
 #include <memory_resource>
+#endif
 #include <string>
 
 #include "common.hpp"

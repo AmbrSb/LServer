@@ -29,7 +29,9 @@
 
 #pragma once
 
+#ifdef USE_PMR_POOL_RESOURCE
 #include <memory_resource>
+#endif
 #include <queue>
 
 #include "dynamic_string.hpp"
