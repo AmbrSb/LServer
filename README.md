@@ -4,7 +4,7 @@ LServer is a **dynamically reconfigureable**, scalable, lightweight, multithread
 * LServer can be used as a **Template** for efficient concurrent network server implementation in C++. 
 * **Teaching Tool**: LServer has a clean architecture and is well documented, making it suitable for teaching design and implementation of scalable concurrent software.
 * **Load Simulation** LServer has a builtin dynamic scripting capability that can be used by the clients to simulate flexiable per-request server-side load simulation.
-* Suitable fo high-end and low-end hardware: Tested and used on both [Raspberry Pi Zero W!](https://www.raspberrypi.org/products/raspberry-pi-zero-w/), and [NEXCOM 7136!](https://www.nexcom.com/Products/network-and-communication-solutions/cyber-security-solutions/rackmount-x86-based-performance-appliance/rackmount-x86-based-performance-appliance-nsa-7136)!
+* Suitable fo high-end and low-end hardware: Tested and used on both [Raspberry Pi Zero W](https://www.raspberrypi.org/products/raspberry-pi-zero-w/), and [NEXCOM 7136](https://www.nexcom.com/Products/network-and-communication-solutions/cyber-security-solutions/rackmount-x86-based-performance-appliance/rackmount-x86-based-performance-appliance-nsa-7136)!
 
 ![rpizero_nsa7136](https://user-images.githubusercontent.com/19773760/131823463-ca416d77-9070-4f67-b4d0-4c224f8cb039.png)
 
@@ -34,6 +34,8 @@ cd lserver
 docker -t lserver build .
 docker run -it --network host lserver
 ```
+On ARM-based platforms you may need to run docker in `--privileged` mode to avoid issues with `apt` and `libseccomp`.
+
 Or you can perform the build directly as follows:
 ```Bash
 git clone https://github.com/AmbrSb/LServer lserver
@@ -85,7 +87,7 @@ All servers destroyed
 # Architecture Notes
 * Proactor-style scalable I/O architecture implemented using Asio.
 * Dynamic memory allocation is minimized: All major objects used in the system are managed by custom pools. Each pool is CERTP-derived from `Pool` template and defined customized allocation/deallocation operations for the specific managed type.
-* Use of dynamic callbacks is avoided, by using a CRTP-based hierarchy design to enabled better function inlining.
+* Use of dynamic callbacks is avoided, by using a CRTP-based hierarchy design to enable better function inlining.
 ![LSDiagram](https://user-images.githubusercontent.com/19773760/131641217-90ac03eb-2f73-4767-9b25-ddf2cf073414.png)
 ## Dynamic Reconfiguration
 In addition to the static configuration file, the user can change the concurrency/parallelism characteristics of individual servers dynamically at runtime, and the server gracefully converges to the given config.
