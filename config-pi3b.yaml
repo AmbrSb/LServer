@@ -1,0 +1,48 @@
+listen:
+  # Server binding address and TCP port
+  ip: 127.0.0.1
+  port: 15001
+  # Allow the socket to be bound to an address that is already in use
+  reuse_address: true
+  # Use a dedicated thread and context for the acceptor. If this is
+  # false one of the worker threads will be used by the acceptor
+  separate_acceptor_thread: true
+
+# Contnrol server binding address and TCP port
+# This is a gRPC server that provides the client with visibility into
+# operational statistics of the servers and also provides contorl over 
+# some aspects of the dynamic configuration of the servers.
+control_server:
+  ip: 127.0.0.1
+  port: 5050
+
+networking:
+  # Whether the server sockets linger on close if unsent data is present
+  socket_close_linger: false
+  socket_close_linger_timeout: 0
+  max_connections_per_source: 100
+
+concurrency:
+  # Number of active LSContexts in the server
+  num_workers: 2
+  # Max number of LSContexts that the server can have. (LSContext can be
+  # added via the control server at runtime.
+  max_num_workers: 2
+  # Number of active threads in each LSContext at startup
+  num_threads_per_worker: 1
+
+sessions:
+  # Maximum number of active sessions in each server. This effectively
+  # limits the maximum number of concurrent connections to the server
+  max_session_pool_size: 1000
+  # Size of the incomming buffer supplied to Asio socket
+  max_transfer_size: 262144
+  # If true, the session pool will eagerly initializes maximum allowed
+  # number of session objects
+  eager_session_pool: false
+
+logging:
+  # The frequency of printing output header in the Portal console. This is
+  # meaningfull only if the `STATISTICS` option in the cmake file is set.
+  header_interval: 24
+
