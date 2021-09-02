@@ -6,14 +6,14 @@ LServer is a **dynamically reconfigureable**, scalable, lightweight, multithread
 * **Load Simulation** LServer has a builtin dynamic scripting capability that can be used by the clients to simulate flexiable per-request server-side load simulation.
 ## Dependencies
 You can use the provided Dockerfile to build and run LServer in a docker container.  The main build/run dependencies of LServer are as follows:
-* GCC-10.3+
-* Asio
+* GCC 8.3+ required, but 10.3+ recommended for C++20 features.
+* Asio 1.12+
 * Protobuf
 * gRPC
 * Yaml-Cpp
 * Google Test
 * Google Mock
-* TBB (optional)
+* TBB 2020.1-2+ (optional)
 # Building
 ## CMake options
 * **NO_RTTI**: Disalbe RTTI in project compilation. This will also automatically disable RTTI in TBB. However, RTTI is required for gRPC server which will be compiled as a separate static library with RTTI.
