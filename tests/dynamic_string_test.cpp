@@ -47,7 +47,11 @@ public:
   void
   SetUp()
   {
+#ifdef USE_PMR_POOL_RESOURCE
     ds_ = new DynamicString{cap_, mr_};
+#else
+    ds_ = new DynamicString{cap_};
+#endif
   }
 
   void
@@ -59,7 +63,9 @@ public:
   ~DynamicStringFixture() { }
 
 protected:
+#ifdef USE_PMR_POOL_RESOURCE
   std::pmr::unsynchronized_pool_resource mr_;
+#endif
   DynamicString* ds_;
   std::size_t const cap_ = GetParam();
 };
