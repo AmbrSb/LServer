@@ -33,33 +33,33 @@
 #include "program.hpp"
 
 namespace lserver {
-
-  inline void
+  
+  void
   DownloadOp::run(Program& program, uintptr_t session_id, LSVirtualMachine& vm)
   {
     program.set_result_code(200);
     program.set_downloaded_size(operand_);
   }
 
-  inline void
+  void
   LockOp::run(Program& program, uintptr_t session_id, LSVirtualMachine& vm)
   {
     vm.lock(session_id, operand_, program.cancellation_request_ref());
   }
 
-  inline void
+  void
   UnlockOp::run(Program& program, uintptr_t session_id, LSVirtualMachine& vm)
   {
     vm.unlock(session_id, operand_);
   }
 
-  inline void
+  void
   SleepOp::run(Program& program, uintptr_t session_id, LSVirtualMachine& vm)
   {
     vm.sleep(operand_);
   }
 
-  inline void
+  void
   LoopOp::run(Program& program, uintptr_t session_id, LSVirtualMachine& vm)
   {
     vm.loop(operand_);

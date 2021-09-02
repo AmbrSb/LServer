@@ -30,7 +30,9 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <iostream>
+#ifdef USE_PMR_POOL_RESOURCE
 #include <memory_resource>
+#endif
 
 #include "common.hpp"
 #include "dynamic_string.hpp"

@@ -21,8 +21,8 @@ find_program(GIT_EXE NAMES git)
 include("${CMAKE_CURRENT_LIST_DIR}/third_party/nlohman_json.cmake")
 
 add_compile_options(
-    "$<$<CONFIG:Debug>:-O0;-fconcepts;-g3;-gdwarf;-ggdb;-fsanitize=address>"
-    "$<$<CONFIG:Release>:-O2;-g3;-fconcepts>"
+    "$<$<CONFIG:Debug>:-O0;-g3;-gdwarf;-ggdb;-fsanitize=address>"
+    "$<$<CONFIG:Release>:-O2;-g3>"
 )
 
 add_link_options(
@@ -105,6 +105,7 @@ add_custom_command(
 
 set(${PROJECT_NAME}_CONTROL_SERVER_SOURCES
     src/control_server.cpp
+    src/vm_instructions.cpp
     ${proto_srcs}
     ${grpc_srcs}
 )
