@@ -30,7 +30,6 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <iostream>
-#include <memory_resource>
 
 #include "basic_pool.hpp"
 #include "common.hpp"
