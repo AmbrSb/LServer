@@ -4,7 +4,7 @@ LServer is a **dynamically reconfigureable**, scalable, lightweight, multithread
 * LServer can be used as a **Template** for efficient concurrent network server implementation in C++. 
 * **Teaching Tool**: LServer has a clean architecture and is well documented, making it suitable for teaching design and implementation of scalable concurrent software.
 * **Load Simulation** LServer has a builtin dynamic scripting capability that can be used by the clients to simulate flexiable per-request server-side load simulation.
-* Suitable fo high-end and low-end hardware: Tested and used on both [Raspberry Pi Zero W](https://www.raspberrypi.org/products/raspberry-pi-zero-w/), and [NEXCOM 7136](https://www.nexcom.com/Products/network-and-communication-solutions/cyber-security-solutions/rackmount-x86-based-performance-appliance/rackmount-x86-based-performance-appliance-nsa-7136)!
+* Suitable fo high-end and low-end hardware: Tested and tuned on both [Raspberry Pi Zero W](https://www.raspberrypi.org/products/raspberry-pi-zero-w/), and [NEXCOM 7136](https://www.nexcom.com/Products/network-and-communication-solutions/cyber-security-solutions/rackmount-x86-based-performance-appliance/rackmount-x86-based-performance-appliance-nsa-7136)!
 
 ![rpizero_nsa7136](https://user-images.githubusercontent.com/19773760/131823463-ca416d77-9070-4f67-b4d0-4c224f8cb039.png)
 
@@ -241,7 +241,7 @@ The configuration file is in YAML format. A sample is provided in the project ro
   * **header_interval**: The frequency of printing output header in the Portal console. This is meaningfull only if the `STATISTICS` option in the cmake file is set.
 
 # Control Server / Embdded gRPC Server
-A gRPC server is embedded in LServer 
+A gRPC server is embedded in LServer that allows the user to:
 * Extract operational statistics of servers
 * Dynamically change configuration of servers
 
