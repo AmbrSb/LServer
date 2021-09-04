@@ -20,6 +20,8 @@ find_package(Git)
 find_program(GIT_EXE NAMES git)
 include("${CMAKE_CURRENT_LIST_DIR}/third_party/nlohman_json.cmake")
 
+set(CMAKE_CXX_FLAGS_RELEASE "-DNDEBUG -Wall")
+
 add_compile_options(
     "$<$<CONFIG:Debug>:-O0;-g3;-gdwarf;-ggdb;-fsanitize=address>"
     "$<$<CONFIG:Release>:-O2;-g3>"
@@ -109,7 +111,7 @@ set(${PROJECT_NAME}_CONTROL_SERVER_SOURCES
     ${proto_srcs}
     ${grpc_srcs}
 )
-add_library(${PROJECT_NAME}_CONTROL_SERVER SHARED ${${PROJECT_NAME}_CONTROL_SERVER_SOURCES})
+add_library(${PROJECT_NAME}_CONTROL_SERVER STATIC ${${PROJECT_NAME}_CONTROL_SERVER_SOURCES})
 target_link_libraries(${PROJECT_NAME}_CONTROL_SERVER
     pthread
     grpc
