@@ -24,17 +24,17 @@ networking:
 
 concurrency:
   # Number of active LSContexts in the server
-  num_workers: 4
+  num_workers: 16
   # Max number of LSContexts that the server can have. (LSContext can be
   # added via the control server at runtime.
-  max_num_workers: 10
+  max_num_workers: 16
   # Number of active threads in each LSContext at startup
   num_threads_per_worker: 1
 
 sessions:
   # Maximum number of active sessions in each server. This effectively
   # limits the maximum number of concurrent connections to the server
-  max_session_pool_size: 1000
+  max_session_pool_size: 10000
   # Size of the incomming buffer supplied to Asio socket
   max_transfer_size: 262144
   # If true, the session pool will eagerly initializes maximum allowed
